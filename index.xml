@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>清晨的博客</title>
+    <link>https://chacefoo.github.io/</link>
+    <description>Recent content on 清晨的博客</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Mon, 29 Mar 2021 18:36:22 +0800</lastBuildDate><atom:link href="https://chacefoo.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>【机器学习笔记】提升方法AdaBoost算法</title>
+      <link>https://chacefoo.github.io/post/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E6%8F%90%E5%8D%87%E6%96%B9%E6%B3%95adaboost%E7%AE%97%E6%B3%95/</link>
+      <pubDate>Mon, 29 Mar 2021 18:36:22 +0800</pubDate>
+      
+      <guid>https://chacefoo.github.io/post/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E6%8F%90%E5%8D%87%E6%96%B9%E6%B3%95adaboost%E7%AE%97%E6%B3%95/</guid>
+      <description>提升方法 一、什么是提升(boosting)方法 ​ 提升方法是一种常用的统计学习方法。在分类问题中，通过改变训练样本的权重，学习多个分类器，并将这些分类器进行线性整合，提高分类的性能。
+二、 提升方法的基本思路  提升方法的思想是，“三个臭皮匠顶个诸葛亮”，多个弱分类器能够组合成一个强分类器。
+ kearns和Valiant提出强可学习和弱可学习的概念。
+ 在概率近似正确（probably approximately correct，PAC）学习框架中，一个概念（一个类），如果存在一个多项式的学习算法能够学习，而且正确率高，则称这个概念是强可学习的。如果正确率仅仅比随机猜想的略好，称这个概念是弱可学习的。
+ Schapire证明，强可学习和弱可学习是等价的。
+ 实践中常常发现弱可学习算法，将弱可学习算法提升为强可学习算法成为研究的重点。
+  三、AdaBoost算法 ​ AdaBoost采取加权多数表决的方法。加大分类误差率小的弱分类器的权值，使其在表决中起较大的作用；减小分类误差大的弱分类器的权值，使其在表决中起较小的作用。
+​ 现在叙述AdaBoost算法。假设给定一个二分类的训练数据集 \( T=\left \{ (x_1,y_1),(x_2,y_2),\cdots ,(x_N,y_N)\right \} \) 其中，每个样本点由实例和标记组成。示例 \(x_i \in X \subseteq R^n\) ，标记 \(y_i \in \ Y =\left \{ -1,+1\right \}\) ，\(X\) 是实例空间，\(Y\) 是标记集合。AdaBoost利用以下算法，从训练数据中学习一系列弱分类器或基本分类器。并将这些弱分类器线性组合成一个强分类器。
+输入：  训练数据集 \(T=\left \{ (x_1,y_1),(x_2,y_2),\cdots ,(x_N,y_N)\right \}\) ，其中 \(x_i \in X \subseteq R^n\) ，\(y_i \in \ Y =\left \{ -1,+1\right \}\)</description>
+    </item>
+    
+  </channel>
+</rss>

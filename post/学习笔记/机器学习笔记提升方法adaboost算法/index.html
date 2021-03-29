@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="en-us">
+  <head>
+    <title>【机器学习笔记】提升方法AdaBoost算法 // 清晨的博客</title>
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <meta charset="utf-8" />
+    <meta name="generator" content="Hugo 0.80.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="author" content="John Doe" />
+    <meta name="description" content="" />
+    <link rel="stylesheet" href="https://chacefoo.github.io/css/main.min.68e582a4d4ed824d6b7e3b5b37cae47eb3779bd631046379d0e68b38230cc3e2.css" />
+
+    
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="【机器学习笔记】提升方法AdaBoost算法"/>
+<meta name="twitter:description" content="提升方法 一、什么是提升(boosting)方法 ​ 提升方法是一种常用的统计学习方法。在分类问题中，通过改变训练样本的权重，学习多个分类器，并将这些分类器进行线性整合，提高分类的性能。
+二、 提升方法的基本思路  提升方法的思想是，“三个臭皮匠顶个诸葛亮”，多个弱分类器能够组合成一个强分类器。
+ kearns和Valiant提出强可学习和弱可学习的概念。
+ 在概率近似正确（probably approximately correct，PAC）学习框架中，一个概念（一个类），如果存在一个多项式的学习算法能够学习，而且正确率高，则称这个概念是强可学习的。如果正确率仅仅比随机猜想的略好，称这个概念是弱可学习的。
+ Schapire证明，强可学习和弱可学习是等价的。
+ 实践中常常发现弱可学习算法，将弱可学习算法提升为强可学习算法成为研究的重点。
+  三、AdaBoost算法 ​ AdaBoost采取加权多数表决的方法。加大分类误差率小的弱分类器的权值，使其在表决中起较大的作用；减小分类误差大的弱分类器的权值，使其在表决中起较小的作用。
+​ 现在叙述AdaBoost算法。假设给定一个二分类的训练数据集 \( T=\left \{ (x_1,y_1),(x_2,y_2),\cdots ,(x_N,y_N)\right \} \) 其中，每个样本点由实例和标记组成。示例 \(x_i \in X \subseteq R^n\) ，标记 \(y_i \in \ Y =\left \{ -1,&#43;1\right \}\) ，\(X\) 是实例空间，\(Y\) 是标记集合。AdaBoost利用以下算法，从训练数据中学习一系列弱分类器或基本分类器。并将这些弱分类器线性组合成一个强分类器。
+输入：  训练数据集 \(T=\left \{ (x_1,y_1),(x_2,y_2),\cdots ,(x_N,y_N)\right \}\) ，其中 \(x_i \in X \subseteq R^n\) ，\(y_i \in \ Y =\left \{ -1,&#43;1\right \}\)"/>
+
+    <meta property="og:title" content="【机器学习笔记】提升方法AdaBoost算法" />
+<meta property="og:description" content="提升方法 一、什么是提升(boosting)方法 ​ 提升方法是一种常用的统计学习方法。在分类问题中，通过改变训练样本的权重，学习多个分类器，并将这些分类器进行线性整合，提高分类的性能。
+二、 提升方法的基本思路  提升方法的思想是，“三个臭皮匠顶个诸葛亮”，多个弱分类器能够组合成一个强分类器。
+ kearns和Valiant提出强可学习和弱可学习的概念。
+ 在概率近似正确（probably approximately correct，PAC）学习框架中，一个概念（一个类），如果存在一个多项式的学习算法能够学习，而且正确率高，则称这个概念是强可学习的。如果正确率仅仅比随机猜想的略好，称这个概念是弱可学习的。
+ Schapire证明，强可学习和弱可学习是等价的。
+ 实践中常常发现弱可学习算法，将弱可学习算法提升为强可学习算法成为研究的重点。
+  三、AdaBoost算法 ​ AdaBoost采取加权多数表决的方法。加大分类误差率小的弱分类器的权值，使其在表决中起较大的作用；减小分类误差大的弱分类器的权值，使其在表决中起较小的作用。
+​ 现在叙述AdaBoost算法。假设给定一个二分类的训练数据集 \( T=\left \{ (x_1,y_1),(x_2,y_2),\cdots ,(x_N,y_N)\right \} \) 其中，每个样本点由实例和标记组成。示例 \(x_i \in X \subseteq R^n\) ，标记 \(y_i \in \ Y =\left \{ -1,&#43;1\right \}\) ，\(X\) 是实例空间，\(Y\) 是标记集合。AdaBoost利用以下算法，从训练数据中学习一系列弱分类器或基本分类器。并将这些弱分类器线性组合成一个强分类器。
+输入：  训练数据集 \(T=\left \{ (x_1,y_1),(x_2,y_2),\cdots ,(x_N,y_N)\right \}\) ，其中 \(x_i \in X \subseteq R^n\) ，\(y_i \in \ Y =\left \{ -1,&#43;1\right \}\)" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://chacefoo.github.io/post/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E6%8F%90%E5%8D%87%E6%96%B9%E6%B3%95adaboost%E7%AE%97%E6%B3%95/" />
+<meta property="article:published_time" content="2021-03-29T18:36:22+08:00" />
+<meta property="article:modified_time" content="2021-03-29T18:36:22+08:00" />
+
+    <script type="text/javascript"
+        async
+        src="https://cdn.bootcss.com/mathjax/2.7.3/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath: [['$','$'], ['\\(','\\)']],
+    displayMath: [['$$','$$'], ['\[\[','\]\]']],
+    processEscapes: true,
+    processEnvironments: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+    TeX: { equationNumbers: { autoNumber: "AMS" },
+         extensions: ["AMSmath.js", "AMSsymbols.js"] }
+  }
+});
+
+MathJax.Hub.Queue(function() {
+    
+    
+    
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i = 0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+});
+</script>
+
+<style>
+code.has-jax {
+    font: inherit;
+    font-size: 100%;
+    background: inherit;
+    border: inherit;
+    color: #515151;
+}
+</style>
+
+  </head>
+  <body>
+    <header class="app-header">
+      <a href="https://chacefoo.github.io/"><img class="app-header-avatar" src="/avatar.jpg" alt="John Doe" /></a>
+      <h1>清晨的博客</h1>
+      <nav class="app-header-menu">
+          <a class="app-header-menu-item" href="/">Home</a>
+      </nav>
+      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vehicula turpis sit amet elit pretium.</p>
+      <div class="app-header-social">
+        
+          <a target="_blank" href="https://github.com/chacefoo" rel="noreferrer noopener"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-github">
+  <title>github</title>
+  <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
+</svg></a>
+        
+      </div>
+    </header>
+    <main class="app-container">
+      
+  <article class="post">
+    <header class="post-header">
+      <h1 class ="post-title">【机器学习笔记】提升方法AdaBoost算法</h1>
+      <div class="post-meta">
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-calendar">
+  <title>calendar</title>
+  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line>
+</svg>
+          Mar 29, 2021
+        </div>
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-clock">
+  <title>clock</title>
+  <circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline>
+</svg>
+          1 min read
+        </div>
+      </div>
+    </header>
+    <div class="post-content">
+      <h1 id="提升方法">提升方法</h1>
+
+<h2 id="一什么是提升boosting方法">一、什么是提升(boosting)方法</h2>
+
+<p>​       提升方法是一种常用的统计学习方法。在分类问题中，通过改变训练样本的权重，学习多个分类器，并将这些分类器进行线性整合，提高分类的性能。</p>
+
+<h2 id="二-提升方法的基本思路">二、 提升方法的基本思路</h2>
+
+<ul>
+<li><p>提升方法的思想是，“三个臭皮匠顶个诸葛亮”，多个弱分类器能够组合成一个强分类器。</p></li>
+
+<li><p>kearns和Valiant提出强可学习和弱可学习的概念。</p></li>
+
+<li><p>在概率近似正确（probably approximately correct，PAC）学习框架中，一个概念（一个类），如果存在一个多项式的学习算法能够学习，而且正确率高，则称这个概念是强可学习的。如果正确率仅仅比随机猜想的略好，称这个概念是弱可学习的。</p></li>
+
+<li><p>Schapire证明，强可学习和弱可学习是等价的。</p></li>
+
+<li><p>实践中常常发现弱可学习算法，将弱可学习算法提升为强可学习算法成为研究的重点。</p></li>
+</ul>
+
+<h2 id="三adaboost算法">三、AdaBoost算法</h2>
+
+<p>​       AdaBoost采取加权多数表决的方法。加大分类误差率小的弱分类器的权值，使其在表决中起较大的作用；减小分类误差大的弱分类器的权值，使其在表决中起较小的作用。</p>
+
+<p>​       现在叙述AdaBoost算法。假设给定一个二分类的训练数据集
+<span  class="math">\(
+T=\left \{ (x_1,y_1),(x_2,y_2),\cdots ,(x_N,y_N)\right \}
+\)</span>
+其中，每个样本点由实例和标记组成。示例 <span  class="math">\(x_i \in X \subseteq R^n\)</span> ，标记 <span  class="math">\(y_i \in \ Y =\left \{ -1,+1\right \}\)</span> ，<span  class="math">\(X\)</span> 是实例空间，<span  class="math">\(Y\)</span> 是标记集合。AdaBoost利用以下算法，从训练数据中学习一系列弱分类器或基本分类器。并将这些弱分类器线性组合成一个强分类器。</p>
+
+<h4 id="输入">输入：</h4>
+
+<ul>
+<li><p>训练数据集 <span  class="math">\(T=\left \{ (x_1,y_1),(x_2,y_2),\cdots ,(x_N,y_N)\right \}\)</span> ，其中 <span  class="math">\(x_i \in X \subseteq R^n\)</span> ，<span  class="math">\(y_i \in \ Y =\left \{ -1,+1\right \}\)</span></p></li>
+
+<li><p>弱学习算法</p></li>
+</ul>
+
+<h4 id="输出">输出：</h4>
+
+<ul>
+<li>最终分类器 <span  class="math">\( G(x)\)</span></li>
+</ul>
+
+<h4 id="步骤">步骤：</h4>
+
+<ul>
+<li><p>(1) 初始化训练数据的权值分布</p>
+
+<ul>
+<li><span  class="math">\(D_1=(\omega _{11},\cdots,\omega_{1i},\cdots,\omega_{1N}), \omega_{1i}=\frac{1}{N},i=1,2,\cdots,N \)</span></li>
+</ul></li>
+
+<li><p>(2) 对于 <span  class="math">\(m=1,2,\cdots,M\)</span></p>
+
+<ul>
+<li><p>(a) 使用具有权值分布 <span  class="math">\(D_m\)</span> 的训练数据集学习，得到基本分类器公式 <span  class="math">\( G_m(x):X\to \left \{ -1,+1\right \}\)</span></p></li>
+
+<li><p>(b) 计算 <span  class="math">\(G_M(x)\)</span> 在训练数据集上的分类误差率 <span  class="math">\( e_m=\sum_{i=1}^{N} P(G_m(x_i)\neq y_i)= \sum_{i=1}^{N}\omega_{mi}I(G_m(x_i)\neq y_i)\)</span></p></li>
+
+<li><p>(c) 计算 <span  class="math">\(G_M(x)\)</span> 的系数 <span  class="math">\(\alpha_m=\frac{1}{2}log\frac{1-e_m}{e_m}\)</span></p></li>
+
+<li><p>(d) 更新训练数据集的权值分布 <span  class="math">\(D_1=(\omega _{m+1,1},\cdots,\omega_{m+1,i},\cdots,\omega_{m+1,N}), \omega_{m+1,i}=\frac{\omega_{mi}}{Z_m}exp(-\alpha_my_iG_m(x_i)),i=1,2,\cdots,N \)</span></p></li>
+</ul>
+
+<p>这里，<span  class="math">\(Z_m\)</span> 是规范化因子 <span  class="math">\(Z_m=\sum_{i=1}^{N}\omega_{mi}exp(-\alpha_my_iG_m(x_i))\)</span> ，它使得 <span  class="math">\(D_{m+1}\)</span> 成为一个概率分布。</p></li>
+
+<li><p>(3) 构建基本分类器的线性组合 <span  class="math">\(f(x)=\sum_{m=1}^{M}\alpha_mG_m(x)\)</span></p></li>
+</ul>
+
+<p>得到最终分类器 <span  class="math">\(G(x)=sign(f(x))=sign(\sum_{m=1}^{M}\alpha_mG_m(x))\)</span></p>
+
+    </div>
+    <div class="post-footer">
+      
+    </div>
+  </article>
+
+    </main>
+    
+  </body>
+</html>
